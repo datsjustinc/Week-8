@@ -20,6 +20,19 @@ namespace Generation
         [SerializeField] private bool leftSide;
         [SerializeField] private bool rightSide;
         
+        // terrain plant life type
+        [SerializeField] private GameObject tree1;
+        [SerializeField] private GameObject tree2;
+        [SerializeField] private GameObject tree3;
+        [SerializeField] private GameObject mushroom;
+        [SerializeField] private GameObject pole;
+        [SerializeField] private GameObject sign;
+        [SerializeField] private GameObject flower;
+        [SerializeField] private GameObject flowerLow;
+        [SerializeField] private GameObject crate;
+        [SerializeField] private GameObject chest;
+        [SerializeField] private GameObject barrel;
+        
         // getters and setters to modify perimeter availability variables
         public bool UpSide { get => upSide; set => upSide = value; }
         public bool DownSide { get => downSide; set => downSide = value; }
@@ -32,6 +45,47 @@ namespace Generation
         private void Start()
         {
             CheckSides();
+            
+            var chance = Random.Range(0, 75);
+
+            switch (chance)
+            {
+                case 0:
+                    tree1.SetActive(true);
+                    break;
+                case 4:
+                    mushroom.SetActive(true);
+                    break;
+                case 9:
+                    pole.SetActive(true);
+                    break;
+                case 14:
+                    sign.SetActive(true);
+                    break;
+                case 19:
+                    flower.SetActive(true);
+                    break;
+                case 25:
+                    tree2.SetActive(true);
+                    break;
+                case 29:
+                    flowerLow.SetActive(true);
+                    break;
+                case 35:
+                    crate.SetActive(true);
+                    break;
+                case 39:
+                    chest.SetActive(true);
+                    break;
+                case 45:
+                    barrel.SetActive(true);
+                    break;
+                case 50:
+                    tree3.SetActive(true);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void Update()

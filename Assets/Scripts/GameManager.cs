@@ -18,7 +18,9 @@ namespace Generation
         [SerializeField] private TerrainData terrainData;
         [SerializeField] private IslandData islandData;
         [SerializeField] private GameObject grassBase;
+        [SerializeField] private GameObject waterBase;
         [SerializeField] private Transform grassParent;
+        [SerializeField] private Transform waterParent;
 
         // grid representing terrain map
         private bool[,] _gridStatus;
@@ -51,29 +53,39 @@ namespace Generation
 
         private void Start()
         {
+            islandData.Randomize();
+            
             // defines 2D arrays for storing terrain block data and location
             _gridStatus = new bool[terrainData.Width, terrainData.Height];
             _gridBlocks = new GameObject[terrainData.Width, terrainData.Height];
             _blockPaths = new Stack<GameObject>();
             
             // loop through rows of grid, offset value of 1 to avoid index-out-of-bounds error
-            for (int rows = 0; rows < terrainData.Height; rows++)
+            for (var rows = 0; rows < terrainData.Height; rows++)
             {
                 // loop through columns of grid, offset value of 1 to avoid index-out-of-bounds error
-                for (int columns = 0; columns < terrainData.Width; columns++)
+                for (var columns = 0; columns < terrainData.Width; columns++)
                 {
                     // set low chance of generating a root block
                     _gridStatus[rows, columns] = Random.value > 0.98f;
 
-                    // if position generates a root block
                     if (_gridStatus[rows, columns])
                     {
-                        // create instance of root block set in position
-                        _gridBlocks[rows, columns] = Instantiate(grassBase, 
-                            new Vector3(columns, 0, rows), Quaternion.Euler(0, 0, 0), grassParent);
-                        
-                        _blockPaths.Push(_gridBlocks[rows, columns]);
+                        // if position generates a root block
+                        if (rows > 5 && rows < terrainData.Height - 5 && columns > 5 &&
+                            columns < terrainData.Width - 5)
+                        {
+                            // create instance of root block set in position
+                            _gridBlocks[rows, columns] = Instantiate(grassBase,
+                                new Vector3(columns, 0, rows), Quaternion.Euler(0, 0, 0), grassParent);
+
+                            _blockPaths.Push(_gridBlocks[rows, columns]);
+                        }
                     }
+
+                    // if position generates a water block
+                    _gridBlocks[rows, columns] = Instantiate(waterBase,
+                        new Vector3(columns, 0, rows), Quaternion.Euler(0, 0, 0), waterParent);
                 }
             }
 
@@ -90,6 +102,8 @@ namespace Generation
 
         private void Generate()
         {
+            islandData.Randomize();
+            
             if (_blockPaths.Count < 1)
             {
                 Debug.Log("Block path count less than 1: " + _blockPaths.Count);

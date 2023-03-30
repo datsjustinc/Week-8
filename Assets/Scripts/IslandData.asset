@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ad3c61e66c36142b0bbd3ff3eb0ed8, type: 3}
   m_Name: IslandData
   m_EditorClassIdentifier: 
-  width: 5
-  height: 5
+  minWidth: 5
+  maxWidth: 10
+  minHeight: 5
+  maxHeight: 10
